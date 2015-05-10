@@ -11,27 +11,22 @@ class TextToDateSpec extends WordSpec with Matchers {
   val parse = new TextToDate { val now = exampleNow }.parse _
 
   "TextToDate" should {
-    "understand words for the current day" in {
-      parse("now") should be (exampleNow)
-      parse("today") should be (exampleNow)
-    }
-    "understand 'tomorrow'" in {
-      parse("tomorrow") should be (examplePlusADay)
-    }
-    "understand 'yesterday'" in {
-      parse("yesterday") should be (exampleMinusADay)
-    }
-    "understand 'day before yesterday'" in {
-      parse("day before yesterday") should be (exampleMinusTwoDays)
-    }
-    "understand 'day before today'" in {
-      parse("day before today") should be (exampleMinusADay)
-    }
-    "understand 'day after today'" in {
-      parse("day after today") should be (examplePlusADay)
-    }
-    "understand '5 days'" in {
-      parse("5 days") should be (examplePlusFiveDays)
+
+    val validExpressions = Map(
+      "now" -> exampleNow,
+      "today" -> exampleNow,
+      "tomorrow" -> examplePlusADay,
+      "yesterday" -> exampleMinusADay,
+      "day before yesterday" -> exampleMinusTwoDays,
+      "day before today" -> exampleMinusADay,
+      "day after today" -> examplePlusADay,
+      "5 days" -> examplePlusFiveDays
+    )
+
+    for ((phrase, expected) <- validExpressions) {
+      s"understand '$phrase'" in {
+        parse(phrase) should be (expected)
+      }
     }
   }
 }
