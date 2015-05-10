@@ -13,10 +13,9 @@ trait TextToDate extends RegexParsers {
   def tomorrow: Parser[LocalDate] = "tomorrow" ^^^ now.plusDays(1)
   def yesterday: Parser[LocalDate] = "yesterday" ^^^ now.minusDays(1)
 
-  def daysBeforeAfter: Parser[Int] = opt(integer) ~ "days?".r ~ opt("before"| "after") map {
-    case None        ~ _ ~ Some("before") => - 1
-    case None        ~ _ ~ Some("after")  => + 1
-    case Some(count) ~ _ ~ None           => + count
+  def daysBeforeAfter: Parser[Int] = opt(integer).map(_.getOrElse(1)) ~ "days?".r ~ opt("before"| "after") map {
+    case count ~ _ ~ (None | Some("after")) => + count
+    case count ~ _ ~ Some("before")         => - count
   }
 
   def relativeDay: Parser[LocalDate] = opt(daysBeforeAfter) ~ opt(today | tomorrow | yesterday) map {
@@ -28,6 +27,7 @@ trait TextToDate extends RegexParsers {
   def parse(text: String): LocalDate = parse(relativeDay, text) match {
     case Success(r, _) => r
     case Failure(msg, _) => throw new RuntimeException(msg)
+    case Error(msg, _) => throw new RuntimeException(msg)
   }
 }
 

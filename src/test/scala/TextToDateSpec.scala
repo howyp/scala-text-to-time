@@ -20,7 +20,9 @@ class TextToDateSpec extends WordSpec with Matchers {
       "day before yesterday" -> exampleMinusTwoDays,
       "day before today" -> exampleMinusADay,
       "day after today" -> examplePlusADay,
-      "5 days" -> examplePlusFiveDays
+      "5 days" -> examplePlusFiveDays,
+      "2 days before tomorrow" -> exampleMinusADay,
+      "4 days after tomorrow" -> examplePlusFiveDays
     )
 
     for ((phrase, expected) <- validExpressions) {
