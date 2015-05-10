@@ -1,5 +1,7 @@
 # scala-text-to-time
 
+[![Build Status](https://travis-ci.org/howyp/scala-text-to-time.svg?branch=master)](https://travis-ci.org/howyp/scala-text-to-time)
+
 Parse human-readable times and dates.
 
 _Still in a very early stage of development, but here are some examples:_
