@@ -23,15 +23,8 @@ trait TextToDate extends RegexParsers {
     case Some(dayIncrement) ~ Some(date) => date plusDays dayIncrement
     case Some(dayIncrement) ~ None       => now  plusDays dayIncrement
   }
-
-  def parse(text: String): LocalDate = parse(relativeDay, text) match {
-    case Success(r, _) => r
-    case Failure(msg, _) => throw new RuntimeException(msg)
-    case Error(msg, _) => throw new RuntimeException(msg)
-  }
 }
 
 object TextToDate extends TextToDate {
   def now = LocalDate.now
-  def apply = parse _
 }
