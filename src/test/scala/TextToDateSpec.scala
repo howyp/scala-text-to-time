@@ -28,6 +28,14 @@ class TextToDateSpec extends WordSpec with Matchers with TextToDate {
         parseAll(relativeDay, sample) should succeedWith (expected)
       }
     }
+
+    Map(
+      "asdfghjkliuytf" -> "no relative date found"
+    ) foreach { case (sample, expected) =>
+      s"fail to parse '$sample'" in {
+        parseAll(relativeDay, sample) should failWith (expected)
+      }
+    }
   }
 
   def succeedWith[T](expected: T)(implicit ev: Manifest[T]) = Matcher[ParseResult[T]] {
@@ -36,7 +44,20 @@ class TextToDateSpec extends WordSpec with Matchers with TextToDate {
       rawFailureMessage = s"Result was '$result', expected '$expected'",
       rawNegatedFailureMessage = s"Result should not have been $result"
     )
-    case f @ (_: Failure | _: Error) => MatchResult(
+    case f => MatchResult(
+      matches = false,
+      rawFailureMessage = s"Parser returned '$f', expected '$expected'",
+      rawNegatedFailureMessage = s"Parser returned '$f', result should not have been $expected"
+    )
+  }
+
+  def failWith(expected: String) = Matcher[ParseResult[_]] {
+    case Failure(msg, _) => MatchResult(
+      matches = msg contains expected,
+      rawFailureMessage = s"Parse failure '$msg' did not contain '$expected'",
+      rawNegatedFailureMessage = s"Parse failure '$msg' contained '$expected'"
+    )
+    case f => MatchResult(
       matches = false,
       rawFailureMessage = s"Parser returned '$f', expected '$expected'",
       rawNegatedFailureMessage = s"Parser returned '$f', result should not have been $expected"
