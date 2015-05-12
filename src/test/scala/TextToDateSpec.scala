@@ -10,8 +10,7 @@ class TextToDateSpec extends WordSpec with Matchers with TextToDate {
   val nowMinusADay = LocalDate.parse("2015-05-08")
   val nowMinusTwoDays = LocalDate.parse("2015-05-07")
 
-
-  "TextToDate" should {
+  "Parser 'relativeDay'" should {
     Map(
       "now" -> now,
       "today" -> now,
@@ -34,6 +33,27 @@ class TextToDateSpec extends WordSpec with Matchers with TextToDate {
     ) foreach { case (sample, expected) =>
       s"fail to parse '$sample'" in {
         parseAll(relativeDay, sample) should failWith (expected)
+      }
+    }
+  }
+
+  "Parser 'positiveInteger'" should {
+    Map(
+      "1" -> 1,
+      "12345678" -> 12345678
+    ) foreach { case (sample, expected) =>
+      s"understand '$sample'" in {
+        parseAll(positiveInteger, sample) should succeedWith (expected)
+      }
+    }
+
+    Map(
+      "0" -> "positive integer expected",
+      "-0" -> "positive integer expected",
+      "-5" -> "positive integer expected"
+    ) foreach { case (sample, expected) =>
+      s"fail to parse '$sample'" in {
+        parseAll(positiveInteger, sample) should failWith (expected)
       }
     }
   }
