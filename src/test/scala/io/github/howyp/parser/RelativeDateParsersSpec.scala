@@ -1,15 +1,23 @@
 package io.github.howyp.parser
 
-import io.github.howyp.test.{SampleDates, ParserSpec}
+import io.github.howyp.test.{SampleDates, ParsersSpec}
 
-class RelativeDateParserSpec extends ParserSpec with RelativeDateParser with SampleDates {
-  ParserSpec(
-    parser = relativeDay,
+class RelativeDateParsersSpec extends ParsersSpec with RelativeDateParser with SampleDates {
+  val namedDaySpec = ParserSpec(
+    parser = namedDay,
     validExpressions = Map(
       "now" -> now,
       "today" -> now,
       "tomorrow" -> nowPlusADay,
-      "yesterday" -> nowMinusADay,
+      "yesterday" -> nowMinusADay
+    ),
+    invalidExpressions = Map(
+      "asdfghjkliuytf" -> "named day expected"
+    )
+  )
+  ParserSpec(
+    parser = relativeDay,
+    validExpressions = namedDaySpec.validExpressions ++ Map(
       "day before yesterday" -> nowMinusTwoDays,
       "day before today" -> nowMinusADay,
       "day after today" -> nowPlusADay,

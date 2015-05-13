@@ -4,10 +4,10 @@ import org.scalatest.{Matchers, WordSpec}
 
 import scala.util.parsing.combinator.RegexParsers
 
-trait ParserSpec extends WordSpec with Matchers with ParserResultMatchers {
-  this: RegexParsers =>
+trait ParsersSpec extends WordSpec with Matchers with ParserResultMatchers {
+  spec: RegexParsers =>
 
-  def ParserSpec[Result](parser: this.Parser[Result], validExpressions: Map[String, Result], invalidExpressions: Map[String, String]) = {
+  case class ParserSpec[Result](parser: spec.Parser[Result], validExpressions: Map[String, Result], invalidExpressions: Map[String, String]) {
     s"$parser" should {
       validExpressions foreach { case (sample, expected) =>
         s"successfully parse '$sample'" in {

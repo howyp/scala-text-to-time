@@ -1,8 +1,8 @@
 package io.github.howyp.parser
 
-import io.github.howyp.test.{SampleDates, ParserSpec}
+import io.github.howyp.test.{SampleDates, ParsersSpec}
 
-class NumberParsersSpec extends ParserSpec with NumberParsers with SampleDates {
+class NumberParsersSpec extends ParsersSpec with NumberParsers with SampleDates {
   ParserSpec(
     parser = positiveInteger,
     validExpressions = Map(

@@ -10,7 +10,7 @@ trait RelativeDateParser extends RegexParsers with NumberParsers {
   def today: Parser[LocalDate] = ("now" | "today") ^^^ now
   def tomorrow: Parser[LocalDate] = "tomorrow" ^^^ now.plusDays(1)
   def yesterday: Parser[LocalDate] = "yesterday" ^^^ now.minusDays(1)
-  def namedDay: Parser[LocalDate] = today | tomorrow | yesterday
+  def namedDay: Parser[LocalDate] = today | tomorrow | yesterday | failure("named day expected")
 
   def daysBeforeAfter: Parser[Int] =
     opt(positiveInteger).map(_.getOrElse(1)) ~ "days?".r ~ opt("before"| "after") map {
