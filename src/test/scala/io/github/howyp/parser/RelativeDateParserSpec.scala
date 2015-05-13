@@ -1,4 +1,6 @@
-package io.github.howyp
+package io.github.howyp.parser
+
+import io.github.howyp.test.{SampleDates, ParserSpec}
 
 class RelativeDateParserSpec extends ParserSpec with RelativeDateParser with SampleDates {
   ParserSpec(

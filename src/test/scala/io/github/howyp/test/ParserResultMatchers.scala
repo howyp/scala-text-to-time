@@ -1,4 +1,4 @@
-package io.github.howyp
+package io.github.howyp.test
 
 import org.scalatest.matchers.{MatchResult, Matcher}
 

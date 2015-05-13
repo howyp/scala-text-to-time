@@ -1,4 +1,4 @@
-package io.github.howyp
+package io.github.howyp.parser
 
 import scala.util.parsing.combinator.RegexParsers
 
