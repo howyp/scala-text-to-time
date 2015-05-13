@@ -16,6 +16,19 @@ class RelativeDateParsersSpec extends ParsersSpec with RelativeDateParser with S
     )
   )
   ParserSpec(
+    parser = daysWithCount,
+    validExpressions = Map(
+      "1 day" -> 1,
+      "2 days" -> 2,
+      "5 days" -> 5
+    ),
+    invalidExpressions = Map(
+      "1 days" -> "incorrect mix of plural and singular",
+      "2 day" -> "incorrect mix of plural and singular",
+      "alksjdhflakjshdlf" -> "expected a number of days"
+    )
+  )
+  ParserSpec(
     parser = relativeDay,
     validExpressions = namedDaySpec.validExpressions ++ Map(
       "day before yesterday" -> nowMinusTwoDays,

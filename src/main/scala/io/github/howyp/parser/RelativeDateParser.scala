@@ -13,15 +13,22 @@ trait RelativeDateParser extends RegexParsers with NumberParsers {
   def namedDay: Parser[LocalDate] =
     today | tomorrow | yesterday | failure("named day expected") named "namedDay"
 
+  def daysWithCount: Parser[Int] =
+    (positiveInteger ~ "days?".r withFailureMessage "expected a number of days") ^? ({
+      case 1     ~ "day"               => + 1
+      case count ~ "days" if count > 1 => + count
+    }, _ => "incorrect mix of plural and singular")  named "daysWithCount"
+
   def daysBeforeAfter: Parser[Int] =
-    opt(positiveInteger).map(_.getOrElse(1)) ~ "days?".r ~ opt("before"| "after") map {
-      case count ~ _ ~ (None | Some("after")) => + count
-      case count ~ _ ~ Some("before")         => - count
+    (daysWithCount | "day" ^^^ 1) ~ opt("before"| "after") map {
+      case count ~ (None | Some("after")) => + count
+      case count ~ Some("before")         => - count
     }
 
-  def relativeDay: Parser[LocalDate] = daysBeforeAfter.? ~ namedDay.? ^? {
-    case Some(count) ~ Some(date) => date plusDays count
-    case None        ~ Some(date) => date
-    case Some(count) ~ None       => now  plusDays count
-  } withFailureMessage "no relative date found" named "relativeDay"
+  def relativeDay: Parser[LocalDate] =
+    daysBeforeAfter.? ~ namedDay.? ^? {
+      case Some(count) ~ Some(date) => date plusDays count
+      case None        ~ Some(date) => date
+      case Some(count) ~ None       => now  plusDays count
+    } withFailureMessage "no relative date found" named "relativeDay"
 }
