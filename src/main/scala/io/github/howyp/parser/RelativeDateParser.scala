@@ -14,15 +14,15 @@ trait RelativeDateParser extends RegexParsers with NumberParsers {
     today | tomorrow | yesterday | failure("named day expected") named "namedDay"
 
   def dayOfWeek: Parser[LocalDate] = (
-      ("sunday" ^^^ now.plusDays(1))
-    | ("monday" ^^^ now.plusDays(2))
-    | ("tuesday" ^^^ now.plusDays(3))
-    | ("wednesday" ^^^ now.plusDays(4))
-    | ("thursday" ^^^ now.plusDays(5))
-    | ("friday" ^^^ now.plusDays(6))
-    | ("saturday" ^^^ now.plusDays(7))
-    | failure("day of the week expected")
-  ) named "dayOfWeek"
+    ("sunday" ^^^ now.plusDays(1))
+      | ("monday" ^^^ now.plusDays(2))
+      | ("tuesday" ^^^ now.plusDays(3))
+      | ("wednesday" ^^^ now.plusDays(4))
+      | ("thursday" ^^^ now.plusDays(5))
+      | ("friday" ^^^ now.plusDays(6))
+      | ("saturday" ^^^ now.plusDays(7))
+      | failure("day of the week expected")
+    ) named "dayOfWeek"
 
   def `x day(s)`: Parser[Int] =
     (positiveInteger ~ "days?".r withFailureMessage "expected a number of days") ^? ({

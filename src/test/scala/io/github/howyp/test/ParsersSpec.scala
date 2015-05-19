@@ -7,7 +7,7 @@ import scala.util.parsing.combinator.RegexParsers
 trait ParsersSpec extends WordSpec with Matchers with ParserResultMatchers {
   spec: RegexParsers =>
 
-  case class ParserSpec[Result](parser: spec.Parser[Result], validExpressions: Map[String, Result], invalidExpressions: Map[String, String]) {
+  case class ParserSpec[Result](parser: spec.Parser[Result], validExpressions: Map[String, Result], invalidExpressions: Map[String, String] = Map()) {
     s"$parser" should {
 
       "have a defined name" in {
