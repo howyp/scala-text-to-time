@@ -16,7 +16,7 @@ class RelativeDateParsersSpec extends ParsersSpec with RelativeDateParser with S
     )
   )
   ParserSpec(
-    parser = dayOfWeek,
+    parser = dayOfWeekFromNow,
     validExpressions = Map(
       "sunday" -> nowPlusADay,
       "monday" -> nowPlusTwoDays,

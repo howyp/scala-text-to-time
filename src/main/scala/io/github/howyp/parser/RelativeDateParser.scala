@@ -3,8 +3,9 @@ package io.github.howyp.parser
 import org.joda.time.LocalDate
 
 import scala.util.parsing.combinator.RegexParsers
+import DayOfWeek._
 
-trait RelativeDateParser extends RegexParsers with NumberParsers {
+trait RelativeDateParser extends RegexParsers with NumberParsers with DayOfWeekParser {
   def now: LocalDate
 
   def today: Parser[LocalDate] = ("now" | "today") ^^^ now
@@ -13,16 +14,15 @@ trait RelativeDateParser extends RegexParsers with NumberParsers {
   def `today/tomorrow/yesterday`: Parser[LocalDate] =
     today | tomorrow | yesterday | failure("named day expected") named "namedDay"
 
-  def dayOfWeek: Parser[LocalDate] = (
-    ("sunday" ^^^ now.plusDays(1))
-      | ("monday" ^^^ now.plusDays(2))
-      | ("tuesday" ^^^ now.plusDays(3))
-      | ("wednesday" ^^^ now.plusDays(4))
-      | ("thursday" ^^^ now.plusDays(5))
-      | ("friday" ^^^ now.plusDays(6))
-      | ("saturday" ^^^ now.plusDays(7))
-      | failure("day of the week expected")
-    ) named "dayOfWeek"
+  def dayOfWeekFromNow: Parser[LocalDate] = dayOfWeek ^^ {
+    case Sunday => now.plusDays(1)
+    case Monday => now.plusDays(2)
+    case Tuesday => now.plusDays(3)
+    case Wednesday => now.plusDays(4)
+    case Thursday => now.plusDays(5)
+    case Friday => now.plusDays(6)
+    case Saturday => now.plusDays(7)
+  } named "dayOfWeekFromNow"
 
   def `x day(s)`: Parser[Int] =
     (positiveInteger ~ "days?".r withFailureMessage "expected a number of days") ^? ({
