@@ -14,5 +14,5 @@ trait DayOfWeekParser extends RegexParsers {
   ) named "dayOfWeek"
 
   private def parserFor(d: DayOfWeek) =
-    (d.name | d.name.toLowerCase) ^^^ d
+    (d.name | d.name.toLowerCase | d.name.toLowerCase.substring(0,3)) ^^^ d
 }

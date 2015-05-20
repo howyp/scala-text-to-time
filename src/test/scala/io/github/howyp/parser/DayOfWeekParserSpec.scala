@@ -21,7 +21,14 @@ class DayOfWeekParserSpec extends ParsersSpec with DayOfWeekParser {
       "thursday" -> Thursday,
       "friday" -> Friday,
       "saturday" -> Saturday,
-      "sunday" -> Sunday
+      "sunday" -> Sunday,
+      "mon" -> Monday,
+      "tue" -> Tuesday,
+      "wed" -> Wednesday,
+      "thu" -> Thursday,
+      "fri" -> Friday,
+      "sat" -> Saturday,
+      "sun" -> Sunday
     )
   )
 }
