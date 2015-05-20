@@ -8,13 +8,11 @@ trait DayOfWeekParser extends RegexParsers {
   import DayOfWeek._
 
   def dayOfWeek: Parser[DayOfWeek] = (
-    ("monday" | "Monday") ^^^ Monday
-    | ("tuesday" | "Tuesday") ^^^ Tuesday
-    | ("wednesday" | "Wednesday") ^^^ Wednesday
-    | ("thursday" | "Thursday") ^^^ Thursday
-    | ("friday" | "Friday") ^^^ Friday
-    | ("saturday" | "Saturday") ^^^ Saturday
-    | ("sunday" | "Sunday") ^^^ Sunday
-    | failure("day of the week expected")
+    values.tail.foldLeft(parserFor(values.head)) { (p, d) =>
+      p | parserFor(d)
+    } | failure("day of the week expected")
   ) named "dayOfWeek"
+
+  private def parserFor(d: DayOfWeek) =
+    (d.name | d.name.toLowerCase) ^^^ d
 }

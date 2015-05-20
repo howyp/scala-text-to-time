@@ -8,6 +8,18 @@ object DayOfWeek {
   case object Friday extends DayOfWeek
   case object Saturday extends DayOfWeek
   case object Sunday extends DayOfWeek
+
+  val values = Seq(
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday,
+    Sunday
+  )
 }
 
-sealed trait DayOfWeek
+sealed trait DayOfWeek {
+  val name = toString
+}
