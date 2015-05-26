@@ -4,7 +4,7 @@ import io.github.howyp.test.{SampleDates, ParsersSpec}
 
 class RelativeDateParsersSpec extends ParsersSpec with RelativeDateParser with SampleDates {
   val namedDaySpec = ParserSpec(
-    parser = `today/tomorrow/yesterday`,
+    parser = `today/tomorrow/yesterday/___day`,
     validExpressions = Map(
       "now" -> now,
       "today" -> now,
@@ -49,9 +49,12 @@ class RelativeDateParsersSpec extends ParsersSpec with RelativeDateParser with S
       "day before yesterday" -> nowMinusTwoDays,
       "day before today" -> nowMinusADay,
       "day after today" -> nowPlusADay,
+      "monday" -> nowPlusTwoDays,
+      "day after monday" -> nowPlusThreeDays,
       "5 days" -> nowPlusFiveDays,
       "2 days before tomorrow" -> nowMinusADay,
-      "4 days after tomorrow" -> nowPlusFiveDays
+      "4 days after tomorrow" -> nowPlusFiveDays,
+      "4 days before thu" -> nowPlusADay
     ),
     invalidExpressions = Map(
       "asdfghjkliuytf" -> "no relative date found"

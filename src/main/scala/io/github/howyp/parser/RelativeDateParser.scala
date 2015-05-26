@@ -11,8 +11,8 @@ trait RelativeDateParser extends RegexParsers with NumberParsers with DayOfWeekP
   def today: Parser[LocalDate] = ("now" | "today") ^^^ now
   def tomorrow: Parser[LocalDate] = "tomorrow" ^^^ now.plusDays(1)
   def yesterday: Parser[LocalDate] = "yesterday" ^^^ now.minusDays(1)
-  def `today/tomorrow/yesterday`: Parser[LocalDate] =
-    today | tomorrow | yesterday | failure("named day expected") named "namedDay"
+  def `today/tomorrow/yesterday/___day`: Parser[LocalDate] =
+    today | tomorrow | yesterday | dayOfWeekFromNow | failure("named day expected") named "namedDay"
 
   def dayOfWeekFromNow: Parser[LocalDate] = dayOfWeek ^^ {
     case Sunday => now.plusDays(1)
@@ -37,10 +37,10 @@ trait RelativeDateParser extends RegexParsers with NumberParsers with DayOfWeekP
     }
 
   def relativeDay: Parser[LocalDate] = (
-      (`x day(s) before/after` ~ `today/tomorrow/yesterday`)
+      (`x day(s) before/after` ~ `today/tomorrow/yesterday/___day`)
     | (`x day(s) before/after` ~ success(now))
     | (`x day(s)`              ~ success(now))
-    | (success(0)              ~ `today/tomorrow/yesterday`)
+    | (success(0)              ~ `today/tomorrow/yesterday/___day`)
   ) ^? {
     case count ~ date => date plusDays count
   } withFailureMessage "no relative date found" named "relativeDay"
