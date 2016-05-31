@@ -14,15 +14,10 @@ trait RelativeDateParser extends RegexParsers with NumberParsers with DayOfWeekP
   def `today/tomorrow/yesterday/___day`: Parser[LocalDate] =
     today | tomorrow | yesterday | dayOfWeekFromNow | failure("named day expected") named "namedDay"
 
-  def dayOfWeekFromNow: Parser[LocalDate] = dayOfWeek ^^ {
-    case Sunday => now.plusDays(1)
-    case Monday => now.plusDays(2)
-    case Tuesday => now.plusDays(3)
-    case Wednesday => now.plusDays(4)
-    case Thursday => now.plusDays(5)
-    case Friday => now.plusDays(6)
-    case Saturday => now.plusDays(7)
-  } named "dayOfWeekFromNow"
+  def dayOfWeekFromNow: Parser[LocalDate] =
+    dayOfWeek ^^ { parsed =>
+      now.plusDays(DayOfWeek.daysBetween(DayOfWeek.today, parsed))
+    } named "dayOfWeekFromNow"
 
   def `x day(s)`: Parser[Int] =
     (positiveInteger ~ "days?".r withFailureMessage "expected a number of days") ^? ({
